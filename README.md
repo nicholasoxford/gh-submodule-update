@@ -8,7 +8,7 @@ I made this before I learned about `git config --global submodule.recurse true`
 ## Usage
 
 ```sh
-gh submodule-update --path  ~/Documents/peloton/music-common-data
+gh submodule-update --path  ~/Documents/projects/submodule
 ```
 
 ## Installation
