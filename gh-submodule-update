@@ -1,0 +1,72 @@
+# #!/bin/bash
+# set -e
+
+# echo "Hello gh-submodule-update!"
+
+
+#!/bin/bash
+set -e
+
+verbose=""
+path_arg=""
+og_path=$PWD
+while [ $# -gt 0 ]; do
+  case "$1" in
+--verbose)
+    verbose=1
+    ;;
+  --path)
+    path_arg="$2"
+    shift
+    ;;
+  -h|--help)
+    echo "Pass in your submodule path using --path ~/usr/myPath"
+    exit 0
+    ;;
+  esac
+  shift
+done
+
+if [ -z "$path_arg" ]
+then
+  echo "You haven't told us your path."
+elif [ -z "$verbose" ]
+then
+  cd $path_arg
+  git fetch
+  git pull
+  echo $og_path
+  cd $og_path
+  git submodule update
+fi
+
+# Snippets to help get started:
+
+# Determine if an executable is in the PATH
+# if ! type -p ruby >/dev/null; then
+#   echo "Ruby not found on the system" >&2
+#   exit 1
+# fi
+
+# Pass arguments through to another command
+# gh issue list "$@" -R cli/cli
+
+# Using the gh api command to retrieve and format information
+# QUERY='
+#   query($endCursor: String) {
+#     viewer {
+#       repositories(first: 100, after: $endCursor) {
+#         nodes {
+#           nameWithOwner
+#           stargazerCount
+#         }
+#       }
+#     }
+#   }
+# '
+# TEMPLATE='
+#   {{- range $repo := .data.viewer.repositories.nodes -}}
+#     {{- printf "name: %s - stargazers: %v\n" $repo.nameWithOwner $repo.stargazerCount -}}
+#   {{- end -}}
+# '
+# exec gh api graphql -f query="${QUERY}" --paginate --template="${TEMPLATE}"
