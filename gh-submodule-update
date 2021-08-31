@@ -3,7 +3,6 @@
 
 # echo "Hello gh-submodule-update!"
 
-
 #!/bin/bash
 set -e
 
@@ -11,33 +10,31 @@ verbose=""
 path_arg=""
 while [ $# -gt 0 ]; do
   case "$1" in
---verbose)
+  --verbose)
     verbose=1
     ;;
   --path)
-    path_arg="$2"
+    path_arg="$1"
     shift
     ;;
-    --r | --return ) shift
-      CLONE_PATH="$1"
-      ;;
-  -h|--help)
+  --r | --return)
+    shift
+    CLONE_PATH="$1"
+    ;;
+  -h | --help)
     echo "Pass in your submodule path using --path ~/usr/myPath"
     exit 0
     ;;
   esac
   shift
 done
-if [ -z "$CLONE_PATH" ]
-then
-  CLONE_PATH="$(pwd)";
+if [ -z "$CLONE_PATH" ]; then
+  CLONE_PATH="$(pwd)"
 fi
 
-if [ -z "$path_arg" ]
-then
+if [ -z "$path_arg" ]; then
   echo "You haven't told us your path."
-elif [ -z "$verbose" ]
-then
+elif [ -z "$verbose" ]; then
   cd $path_arg
   git fetch
   git pull
