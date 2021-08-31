@@ -9,7 +9,6 @@ set -e
 
 verbose=""
 path_arg=""
-og_path=$PWD
 while [ $# -gt 0 ]; do
   case "$1" in
 --verbose)
@@ -19,6 +18,9 @@ while [ $# -gt 0 ]; do
     path_arg="$2"
     shift
     ;;
+    --r | --return ) shift
+      CLONE_PATH="$1"
+      ;;
   -h|--help)
     echo "Pass in your submodule path using --path ~/usr/myPath"
     exit 0
@@ -26,6 +28,10 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
+if [ -z "$CLONE_PATH" ]
+then
+  CLONE_PATH="$(pwd)";
+fi
 
 if [ -z "$path_arg" ]
 then
@@ -35,8 +41,7 @@ then
   cd $path_arg
   git fetch
   git pull
-  echo $og_path
-  cd $og_path
+  cd $CLONE_PATH
   git submodule update
 fi
 
